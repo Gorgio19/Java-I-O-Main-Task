@@ -1,10 +1,12 @@
-
 ----Bass.txt
 ----Palace.txt
 ----Fashion Killa.txt
+----Goldie.txt
 ----Phoenix.txt
 ----Changes.txt
+----Distorted Records.txt
 ----Praise The Lord.txt
+----Purity.txt
 --LiveLove
 --LongLive
 --Testing

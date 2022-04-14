@@ -1,11 +1,11 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Objects;
+import java.io.*;
 import java.util.Scanner;
 
 public class Main {
+    static int amountOfDirectories = 0;
+    static int amountOfFiles = 0;
+    static int sumOfFilesNameLength = 0;
+
     public static void main(String[] args) {
         File myFile = new File("data/output.txt");
         Scanner scan = new Scanner(System.in);
@@ -15,7 +15,7 @@ public class Main {
         if (directory.isDirectory()){
       makeTree(myFile,directory, 1);
     } else if (directory.isFile()){
-
+            try {getInfo(directory);} catch (IOException e) {e.printStackTrace();}
         } else System.out.println("check your input");
     }
 
@@ -28,8 +28,8 @@ public class Main {
             File[] underFile = directory.listFiles();
             assert underFile != null;
             for (File file : underFile) {
-                System.out.println(file.getName());
                 writer.write(preStr + file.getName() + "\n");
+                System.out.println(file.getName());
                 if (file.isDirectory()) {
                     makeTree(myFile, file, level + 1);
                 }
@@ -37,5 +37,42 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void getInfo(File directory) throws IOException {
+        FileReader fr;
+        BufferedReader br = null;
+        try{
+            fr = new FileReader(directory);
+            br = new BufferedReader(fr);
+            String line = br.readLine();
+            while(line != null){
+                if (line.contains(".txt")){
+                    amountOfFiles++;
+                    sumOfFilesNameLength+=getNameLength(line);
+                } else amountOfDirectories++;
+                line = br.readLine();
+            }
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        } finally {
+            assert br != null;
+            br.close();
+        }
+        System.out.println("Amount of directories = " + amountOfDirectories);
+        System.out.println("Amount of files = " + amountOfFiles);
+        System.out.println("Average amount of files in the directory = " + amountOfFiles/amountOfDirectories);
+        System.out.println("Average length of files' name = " +sumOfFilesNameLength/amountOfFiles);
+    }
+
+    public static int getNameLength(String line){
+        int dashCount = 0;
+        char dash = '-';
+        for (int i = 0; i < line.length(); i++) {
+            if((line.charAt(i)) == dash) {
+                dashCount++;
+            }
+        }
+        return line.length() - 3 - dashCount;
     }
 }
