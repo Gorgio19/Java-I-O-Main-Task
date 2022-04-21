@@ -29,7 +29,7 @@ public class Main {
             assert underFile != null;
             for (File file : underFile) {
                 writer.write(preStr + file.getName() + "\n");
-                System.out.println(file.getName());
+                System.out.println(preStr + file.getName());
                 if (file.isDirectory()) {
                     makeTree(myFile, file, level + 1);
                 }
